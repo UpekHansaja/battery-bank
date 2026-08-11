@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Battery Bank Sizing Calculator
+
+A modern Next.js web application for sizing battery banks based on manufacturer discharge tables. It calculates the required number of battery strings for a given load and autonomy duration, and performs a reverse validation check for proposed installed batteries.
+
+## Features
+
+- Linear interpolation of battery discharge rates to accurately determine capacity for any duration.
+- Clean, responsive UI with real-time calculations.
+- Reverse calculation to find exact reserve hours for a given string count.
+- Powered by MySQL.
+
+## Prerequisites
+
+- Node.js (v20+)
+- MySQL Server running locally (or remote)
 
 ## Getting Started
 
-First, run the development server:
+1. **Database Setup**
+   - Ensure your MySQL server is running.
+   - Run the provided schema script to create the database and tables:
+     ```bash
+     mysql -u root -p < db/schema.sql
+     ```
+   *(Adjust username `-u root` as needed)*
 
+2. **Environment Variables**
+   Create a `.env` file in the root of the project with your MySQL connection details:
+   ```env
+   MYSQL_HOST=localhost
+   MYSQL_USER=root
+   MYSQL_PASSWORD=your_password
+   MYSQL_DATABASE=battery_calc
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Seed Database**
+   Load the example `SunGEL Ultra 2SGU1400` data into the database:
+   ```bash
+   npx tsx db/seed.ts
+   ```
+
+5. **Run the Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Adding New Battery Models
+
+To add a new battery model, you will need to insert it into the `BatteryModel` table, and insert its discharge hour-rate mappings into the `DischargeCapacity` table. 
+You can modify `db/seed.ts` and run it again to load more models programmatically.
+
+## Unit Tests
+
+Run the mathematical interpolation logic tests using Jest:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
