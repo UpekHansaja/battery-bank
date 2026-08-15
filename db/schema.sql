@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS battery_calc;
-USE battery_calc;
+-- CREATE DATABASE IF NOT EXISTS battery_calc;
+-- USE battery_calc;
 
 CREATE TABLE IF NOT EXISTS BatteryModel (
     id VARCHAR(255) PRIMARY KEY,

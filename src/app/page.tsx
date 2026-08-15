@@ -20,7 +20,15 @@ export default function Home() {
     async function fetchBatteries() {
       try {
         const res = await fetch('/api/batteries');
+        if (!res.ok) {
+          console.error('API error:', res.status, await res.text());
+          return;
+        }
         const data = await res.json();
+        if (!Array.isArray(data)) {
+          console.error('Unexpected API response:', data);
+          return;
+        }
         setModels(data);
         if (data.length > 0) {
           setSelectedModelId(data[0].id);

@@ -10,7 +10,16 @@ export async function GET() {
 
     const result = (models as any[]).map(model => ({
       ...model,
-      capacities: (capacities as any[]).filter(c => c.batteryModelId === model.id)
+      nominalVoltage: Number(model.nominalVoltage),
+      endVpc: Number(model.endVpc),
+      capacities: (capacities as any[])
+        .filter(c => c.batteryModelId === model.id)
+        .map(c => ({
+          ...c,
+          hourRate: Number(c.hourRate),
+          ahCapacity: Number(c.ahCapacity),
+          whCapacity: Number(c.whCapacity),
+        }))
     }));
 
     return NextResponse.json(result);
